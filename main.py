@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import sys,os
 from PyQt5.QtWidgets import QApplication, QMainWindow
+from PyQt5 import QtWidgets
 import qdarkstyle
 import ycphelper
 import winreg
@@ -24,7 +25,6 @@ class Main(QMainWindow):
         self.ui.setupUi(self)
         self.ui.comboBox.addItems(list(self.ycpDict.keys()))
         self.ui.comboBox.activated[str].connect(self.SetCurrentRailId)
-
         self.show()
 
     def InitRaild(self):
@@ -43,14 +43,17 @@ class Main(QMainWindow):
     def OpenYCPDir(self):
         path = self.ycpDict[self.currentRailId]
         if path:
-            if os.path.exists(path):
-                os.system("explorer.exe %s" % path)
+            if not os.path.exists(path):
+                os.makedirs(path, mode=0o777)
+            QtWidgets.QFileDialog.getExistingDirectory(self,"YCP目录", path)
+                #os.system("explorer.exe %s" % path)
 
     def OpenYLANDDir(self):
         path = self.ylandDict[self.currentRailId]
         if path:
-            if os.path.exists(path):
-                os.system("explorer.exe %s" % path)
+            if not os.path.exists(path):
+                os.makedirs(path, mode=0o777)
+            QtWidgets.QFileDialog.getExistingDirectory(self, "YLAND目录", path)
 
     def SetCurrentRailId(self,text):
         self.currentRailId = text
