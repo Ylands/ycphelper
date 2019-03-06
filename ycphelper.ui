@@ -72,26 +72,52 @@
     <property name="geometry">
      <rect>
       <x>20</x>
-      <y>90</y>
+      <y>80</y>
       <width>121</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
-     <string>打开.ycp 目录</string>
+     <string>打开游戏.ycp 目录</string>
     </property>
    </widget>
    <widget class="QPushButton" name="pushButton_2">
     <property name="geometry">
      <rect>
-      <x>180</x>
-      <y>90</y>
+      <x>20</x>
+      <y>130</y>
       <width>121</width>
       <height>41</height>
      </rect>
     </property>
     <property name="text">
      <string>打开.yland 目录</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_4">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>80</y>
+      <width>121</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>打开组件.ycp目录</string>
+    </property>
+   </widget>
+   <widget class="QPushButton" name="pushButton_3">
+    <property name="geometry">
+     <rect>
+      <x>180</x>
+      <y>130</y>
+      <width>121</width>
+      <height>41</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>打开游戏日志</string>
     </property>
    </widget>
   </widget>

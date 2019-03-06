@@ -11,7 +11,10 @@ class Main(QMainWindow):
     rail_user_data = ''
     railidDict = {}
     ycpDict = {}
+    ycpGameDict = {}
+    ycpCompDict = {}
     ylandDict = {}
+    ylandGamelog = ''
     currentRailId = ''
     ui = ycphelper.Ui_MainWindow()
     def __init__(self,parent=None):
@@ -23,9 +26,10 @@ class Main(QMainWindow):
         self.InitRaild()
 
         self.ui.setupUi(self)
-        self.ui.comboBox.addItems(list(self.ycpDict.keys()))
+        self.ui.comboBox.addItems(list(self.ycpGameDict.keys()))
         self.ui.comboBox.activated[str].connect(self.SetCurrentRailId)
         self.show()
+        self.ui.pushButton_3.clicked.connect(self.OpenGameLogTxt)
 
     def InitRaild(self):
         key = winreg.OpenKey(winreg.HKEY_CURRENT_USER, r"Software\Rail\YlandsRail")
@@ -37,36 +41,54 @@ class Main(QMainWindow):
         userRailIdList = os.listdir(rail_user_data)
         for railid in userRailIdList:
             self.railidDict[railid] = rail_user_data + '\\' + railid
-            self.ycpDict[railid] = rail_user_data + '\\' + railid + '\\' + 'cloud_storage\\files\\Share\\Games'
+            self.ycpGameDict[railid] = rail_user_data + '\\' + railid + '\\' + 'cloud_storage\\files\\Share\\Games'
             self.ylandDict[railid] = rail_user_data + '\\' + railid + '\\' + 'cloud_storage\\files\\Scenarios'
+            self.ycpCompDict[railid] = rail_user_data + '\\' + railid + '\\' + 'cloud_storage\\files\\Share\\Compositions'
+            self.ylandGamelog = os.path.dirname(ylandsPath) + '\\' + "艾兰岛(2000108)"
 
-    def OpenYCPDir(self):
-        path = self.ycpDict[self.currentRailId]
+    def OpenGameYCPDir(self):
+        path = self.ycpGameDict[self.currentRailId]
         if path:
             if not os.path.exists(path):
                 os.makedirs(path, mode=0o777)
-            QtWidgets.QFileDialog.getExistingDirectory(self,"YCP目录", path)
-                #os.system("explorer.exe %s" % path)
+            os.system("explorer.exe %s" % path)
 
     def OpenYLANDDir(self):
         path = self.ylandDict[self.currentRailId]
         if path:
             if not os.path.exists(path):
                 os.makedirs(path, mode=0o777)
-            QtWidgets.QFileDialog.getExistingDirectory(self, "YLAND目录", path)
+            os.system("explorer.exe %s" % path)
 
-    def SetCurrentRailId(self,text):
+    def OpenCompYCPDir(self):
+        path = self.ycpCompDict[self.currentRailId]
+        if path:
+            if not os.path.exists(path):
+                os.makedirs(path, mode=0o777)
+            os.system("explorer.exe %s" % path)
+
+    def OpenGameLogTxt(self):
+        path = self.ylandGamelog
+        if path:
+            os.system("explorer.exe %s" % path)
+
+
+
+
+
+    def SetCurrentRailId(self, text):
         self.currentRailId = text
         if self.ui.comboBox.currentIndex() != 0:
-            self.ui.pushButton.clicked.connect(self.OpenYCPDir)
+            self.ui.pushButton.clicked.connect(self.OpenGameYCPDir)
             self.ui.pushButton_2.clicked.connect(self.OpenYLANDDir)
+            self.ui.pushButton_4.clicked.connect(self.OpenCompYCPDir)
         else:
-            self.ui.pushButton.clicked.disconnect(self.OpenYCPDir)
-            self.ui.pushButton_2.clicked.disconnect(self.OpenYLANDDir)
+            self.ui.pushButton.clicked.disconnect(self.OpenGameYCPDir)
+            self.ui.pushButton_2.clicked.disconnect(self.OpenGameLogTxt)
+            self.ui.pushButton_4.clicked.disconnect(self.OpenCompYCPDir)
+
 
 if __name__ == '__main__':
-
-
     app = QApplication(sys.argv)
     app.setStyleSheet(qdarkstyle.load_stylesheet_pyqt5())
     ex = Main()
